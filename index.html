@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nabla&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Honk:MORF@15&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="script.js"></script>
+    <title>Crack The Code</title>
+</head>
+<body>
+    <!-- first page -->
+    <section class="home-page">
+        <p id="intro1">NUMBER GUESSING GAME</p>
+        <h1>Crack The Code</h1>
+        <p id="intro2">Can you get the hidden number?</p>
+
+        <div class="div1">
+            <input class="un" type="text" placeholder="Enter your username">
+            <button class="un-btn">Set username</button>
+        </div>
+        <div class="div2">
+            <p id="leader">CURRENT LEADERBOARD</p>
+            <div class="horizontal-scroll">
+                <div class="vertical-scroll">
+                    <table class="leaderboard">
+                        <thead class="table-head">
+                            <tr>
+                                <th>RANK</th><th>PLAYER</th><th>WINS</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-body">
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- second page -->
+    <section class="game-setup">
+        <div class="div3">
+            <h3>Crack The Code</h3>
+            <h1>Game Setup</h1>
+            <p>Playing as: <span id="display-un">Ahana</span></p>
+        </div>
+        <div class="div4">
+            <p id="intro3">Number of Digits</p>
+            <select name="Digits" id="dropdown-digit">
+                <option value="2 digits">2 digits</option>
+                <option value="3 digits">3 digits</option>
+                <option value="4 digits">4 digits</option>
+                <option value="5 digits">5 digits</option>
+                <option value="6 digits">6 digits</option>
+            </select>
+        </div>
+        <div class="div5">
+            <p id="intro4">Want Digits Repeated?</p>
+            <div class="radio-btn">
+                <label class="radio-opt">
+                    <input type="radio" name="yes/no" value="yes">YES
+                </label>
+                <label class="radio-opt">
+                    <input type="radio" name="yes/no" value="no">NO
+                </label>
+            </div>
+        </div>
+        <div class="div6">
+            <button class="submit-btn">Start Game</button>
+        </div>
+    </section>
+
+
+    <!-- third page -->
+    <section class="game-page">
+        <div class="div7">
+            <h3>Crack The Code</h3>
+            <h1>Think. Guess. Crack</h1>
+            <p id="p1">Playing as: <span id="game-display-un">Ahana</span></p>
+            <p id="p2"><span id="display-digit"> </span> digits | <span id="display-repeat"> </span> Repeat</p>
+        </div>
+        <div class="div8">
+            <p>Attempt: <span id="attempt-cnt"> </span></p>
+        </div>
+        <div id="secret-display">* * * *</div>
+        <input id="secret-inputb" type="text" placeholder="Enter your guess">
+        <div class="game-submit">
+            <button class="submit-game">SUBMIT</button>
+        </div>
+        <div class="result-feedback">
+            <p id="feedback-text">current feedback</p>
+        </div>
+        <div class="guess-history">
+            <p class="history-title">Guess History</p>
+            <p id="history-list"></p>
+        </div>
+        <div class="gamepage-btns">
+            <button class="give-up">Give Up</button>
+            <button class="new-game">New Game</button>
+        </div>
+        <div class="feedback-area">
+            <h2>Send Anonymous Feedback</h2>
+            <textarea id="f-box" rows="4" placeholder="Enter any feedback for improvement!"></textarea>
+            <button id="feedback-btn">Send Feedback</button>
+            <div class="feedback-status"></div>
+        </div>
+    </section>
+
+    <!-- footer -->
+    <footer><p>Dev by @Ahana</p></footer>
+
+    <script>
+    document.addEventListener('mousemove',e=>{
+        document.documentElement.style.setProperty('--mouse-x',e.clientX+'px');
+        document.documentElement.style.setProperty('--mouse-y',e.clientY+'px');
+    })
+    </script>
+
+</body>
+</html>

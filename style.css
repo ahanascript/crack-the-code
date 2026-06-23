@@ -1,0 +1,626 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html{
+    height: 100%;
+    background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #0f0c29);
+    background-size: 600% 600%;
+    animation: gradientBG 15s ease infinite;
+    height: 100%;
+}
+
+html::before, html::after {
+    content: "";
+    position: fixed;
+    width: 80vmax; /* Larger for a more "atmospheric" feel */
+    height: 80vmax;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(64, 150, 255, 0.1) 0%, transparent 80%);
+    filter: blur(80px); /* Heavier blur so it feels like gas/clouds */
+    z-index: -2; /* Deepest layer */
+    pointer-events: none;
+    animation: drift 25s infinite alternate ease-in-out;
+}
+
+html::after {
+    background: radial-gradient(circle, rgba(173, 46, 232, 0.792) 0%, transparent 70%);
+    width: 60vmax;
+    height: 60vmax;
+    animation-duration: 30s;
+    animation-delay: -5s;
+}
+
+@keyframes drift {
+    from { transform: translate(-10%, -10%) rotate(0deg); }
+    to { transform: translate(20%, 20%) rotate(360deg); }
+}
+
+body{
+    max-width: 360px;
+    margin: 0 auto;
+    padding: 12px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.home-page{
+    flex: 1;
+}
+
+.home-page h1{
+    text-align: center;
+    letter-spacing: 1px;
+    color: #d5ff40;
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    font-size: 35px;
+}
+
+#intro1{
+    margin-top: 50px;
+    text-align: center;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: #c0c2b8;
+}
+
+#intro2{
+    margin-top: 5px;
+    text-align: center;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: #c0c2b8;
+}
+
+.div1{
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    margin-top: 30px;
+}
+
+.un{
+    background: transparent;
+    border: 1px solid #d5ff40;
+    color: #ffffff;
+    margin-top: 35px;
+    padding: 15px;
+    width: 100%;
+    max-width: 280px;
+    border-radius: 8px;
+    box-shadow: 4px 4px 0px #d5ff40;
+}
+
+.un-btn{
+    margin-top: 25px;
+    padding: 15px;
+    width: 100%;
+    max-width: 280px;
+    background-color: #d5ff40;
+    border-radius: 8px;
+    font-weight: 600;
+    border: none;
+    box-shadow: 0px 0px 10px #d5ff40;
+}
+
+.un-btn:active{
+    transform: scale(0.95);
+}
+
+.un::placeholder{
+    color: #666666;
+}
+
+.un:focus{
+    outline: none;
+    border-color: #ffffff;
+}
+
+/* leaderboard */
+
+.div2{
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    margin-top: 45px;
+    color: #ffffff;
+}
+
+#leader{
+    background-color: #1a1a1a;
+    width: 100%;
+    height: 40px;
+    padding: 8px;
+    color: #c0c2b8;
+    text-align: center;
+    font-family: "Honk", system-ui;
+    font-size: 32px;
+    font-weight: 400;
+}
+
+.vertical-scroll{
+    height: 250px;
+    overflow-y: auto;
+    margin-top: 0;
+    padding-top: 0;
+}
+
+.horizontal-scroll{
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.leaderboard{
+    margin-top: 0px;
+}
+
+table{
+    width: 100%;
+    min-width: 600px;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.table-head{
+    font-size: 25px;
+    z-index: 10;
+    top: 0px;
+    position: sticky;
+}
+
+.table-head th{
+    padding: 12px;
+    background-color: #1a1a1a;
+    color: #d5ff40;
+    font-family: "Poppins", sans-serif;
+}
+
+.table-head th:nth-child(1){width: auto;}  /*#rank*/
+.table-head th:nth-child(2){width: auto;}  /*#player*/
+.table-head th:nth-child(3){width: auto;}  /*#score*/
+.table-head th:nth-child(4){width: auto;}  /*#wins*/
+
+.table-body{
+    font-size: 20px;
+    background: #222222;
+}
+
+.table-body td{
+    padding: 12px;
+    text-align: center;
+    border-bottom:1px solid #c0c2b8;
+}
+
+/* game setup page */
+
+.game-setup{
+    display:none;
+    flex: 1;
+}
+
+.div3{
+    margin: 15px;
+    border-bottom: 1px solid #2a2a2a;
+    padding-bottom: 20px;
+    margin-bottom: 10px;
+}
+
+.div3 h3{
+    text-align: center;
+    letter-spacing: 1px;
+    color: #d5ff40;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-size: 18px;
+}
+
+.div3 h1{
+    margin-top: 30px;
+    font-family: "Poppins", sans-serif;
+    text-align: center;
+    font-size: 45px;
+    color: #ffffff;
+}
+
+.div3 p{
+    text-align: center;
+    margin-top: 18px;
+    font-size: 20px;
+    color:#d5ff40;
+    font-weight: 700;
+    font-family: cursive;
+}
+
+
+#intro3{
+    margin-top: 50px;
+    margin-left: 10px;
+    margin-bottom: 25px;
+    font-size: 20px;
+    text-align: left;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: #ffffff;
+    font-weight: 500;
+}
+
+#dropdown-digit{
+    background-color: #1a1a1a;
+    color: #ffffff;
+    border: 1px solid #d5ff40;
+    padding: 8px 12px;
+    font-size: 16px;
+    width: 100%;
+    height: 40px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+#dropdown-digit:focus{
+    outline: none;
+    border-color: white;
+}
+
+#intro4{
+    margin-top: 50px;
+    margin-left: 10px;
+    margin-bottom: 25px;
+    font-size: 20px;
+    text-align: left;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: #ffffff;
+    font-weight: 500;
+}
+
+.radio-btn{
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 25px;
+    color: #ffffff;
+}
+
+.radio-opt{
+    display: flex;
+    cursor: pointer;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 18px;
+    align-items: center;
+    gap: 10px;
+}
+
+input[type="radio"] {
+    accent-color: #d5ff40;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+
+.div6{
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    
+}
+
+.submit-btn{
+    align-items: center;
+    margin-top: 35px;
+    padding: 15px;
+    width: 100%;
+    max-width: 280px;
+    background:#2a2a2a;
+    color: #ffffff;
+    font-size: 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    border: none;
+    box-shadow: 0px 0px 10px #d5ff40;
+}
+
+.submit-btn:active{
+    transform: scale(0.95);
+    background-color: #d5ff40;
+    color: black;
+}
+
+/* game page */
+
+.game-page{
+    flex: 1;
+    display: none;
+    text-align: center;
+}
+
+.div7{
+    margin: 15px;
+    border-bottom: 1px solid #2a2a2a;
+    padding-bottom: 20px;
+}
+
+.div7 h1{
+    margin-top: 18px;
+    font-family: "Poppins", sans-serif;
+    text-align: center;
+    font-size: 30px;
+    color: #ffffff;
+}
+
+
+.div7 h3{
+    text-align: center;
+    letter-spacing: 1px;
+    color: #d5ff40;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-size: 18px;
+}
+
+.div7 p{
+    font-family: cursive;
+    color: #c0c2b8;
+    font-weight: 400;
+    text-align: center;
+}
+
+#p1{
+    margin-top: 25px;
+    margin-bottom: 10px;
+    font-size: 18px;
+    letter-spacing: 1px;
+}
+
+#p2{
+    letter-spacing: 2px;
+    font-size: 20px;
+}
+
+.div8 p{
+    margin-top: 20px;
+    color: #FF0099;
+    font-size: 20px;
+    letter-spacing: 1px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-align: center;
+    font-weight: 400;
+}
+
+#secret-display{
+    text-align: center;
+    color: #d5ff40;
+    margin-top: 30px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    font-size: 35px;
+}
+
+#secret-inputb{
+    display: inline-block;
+    background: transparent;
+    border: 1px solid #d5ff40;
+    color: #ffffff;
+    margin-top: 35px;
+    padding: 15px;
+    width: 100%;
+    max-width: 280px;
+    border-radius: 8px;
+    box-shadow: 4px 4px 0px #d5ff40;
+}
+
+.game-submit{
+    display: flex;
+    justify-content: center;
+}
+.submit-game{
+    align-items: center;
+    margin-top: 30px;
+    padding: 10px;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 200px;
+    background:#2a2a2a;
+    color: #ffffff;
+    font-size: 18px;
+    border-radius: 17px;
+    font-weight: 600;
+    border: none;
+    box-shadow: 0px 0px 10px #d5ff40;
+}
+
+.submit-game:active{
+    transform: scale(0.95);
+    background-color: #d5ff40;
+    color: black;
+}
+
+.result-feedback{
+    margin-top: 30px;
+    margin-bottom: 20px;
+    padding: 5px;
+    background-color: #1a1a1a;
+    border-radius: 15px;
+    min-height: 60px;
+    color: hotpink;
+}
+
+#feedback-text{
+    text-align: center;
+    font-family: "Fraunces", serif;
+    font-weight: 700;
+    font-size: 20px;
+    color: hotpink;
+    padding: 5px;
+}
+
+.guess-history{
+    max-height: 150px;
+    margin-bottom: 5px;
+    overflow-y: auto;
+    overflow-x: auto;
+    background-color: #1a1a1a;
+    color: #ffc8dd;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    border-radius: 8px;
+    padding: 5px;
+    margin-top: 20px;
+    margin-bottom: 25px;
+}
+
+.history-title{
+    text-align: center;
+    font-family: "Honk", system-ui;
+    margin-bottom: 15px;
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    border-bottom: 1px solid #2a2a2a;
+    width: 100%;
+    min-width: 280px;
+}
+
+#history-list{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.gamepage-btns{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.give-up{
+    padding: 15px;
+    border-radius: 8px;
+    width: 120px;
+    font-weight: 500;
+    font-family: "Poppins" , sans-serif;
+    cursor: pointer;
+    border: 1px solid hotpink;
+    color:#ffffff;
+    background: transparent;
+}
+
+.give-up:active{
+    transform: scale(0.95);
+    color: black;
+    background-color: hotpink;
+    transition: 0.5s;
+}
+
+
+.new-game{
+    padding: 15px;
+    border-radius: 8px;
+    width: 120px;
+    font-weight: 500;
+    font-family: "Poppins" , sans-serif;
+    cursor: pointer;
+    border: 1px solid hotpink;
+    color:#ffffff;
+    background: transparent;
+}
+
+.new-game:active{
+    transform: scale(0.95);
+    color: black;
+    background-color: hotpink;
+    transition: 0.5s;
+}
+
+
+.feedback-area{
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 10px;
+    font-size: 15px;
+    padding: 12px;
+    border-radius: 12px;
+    background-color: #18ff9a;
+    border: 1px solid #2a2a2a;
+}
+
+.feedback-area h2{
+    color: #0f0c29;
+    font-family: "Poppins", sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+#f-box{
+    width: 100%;
+    background-color: #ffc8dd;
+    border: 1px solid #ffd60a;
+    color: black;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-family: inherit;
+    resize: vertical;
+    margin-bottom: 12px;
+}
+
+.f-box:focus{
+    outline: none;
+    border-color: #ffffff;
+}
+
+.f-box::placeholder{
+    color: #0f0c29;
+}
+
+#feedback-btn{
+    width: 100%;
+    padding: 12px;
+    background-color: #240046;
+    border: 1px solid #d5ff40;
+    color: #d5ff40;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#feedback-btn:active{
+    transform: scale(0.95);
+    background-color: #d5ff40;
+    color: black;
+}
+
+.feedback-status {
+    text-align: center;
+    font-size: 13px;
+    margin-top: 10px;
+    color: #d5ff40;
+}
+
+.feedback-status.error {
+    color: #ff4444;
+}
+
+
+
+
+
+footer{
+    font-family: "Nabla", system-ui;
+    letter-spacing: 1px;
+    font-size: 14px;
+    text-align: center;
+    width: 100%;
+    /* background-color: #111111; */
+    background: transparent;
+    color: #666666;
+    padding: 10px;
+    margin-top: 0px;
+    /* border-top: 1px solid #2a2a2a; */
+}
