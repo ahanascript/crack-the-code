@@ -5,25 +5,36 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
 //detect un-btn click
 document.addEventListener('DOMContentLoaded', function(){
-
+    let currentSecCode = [];
+    let attempts = 0;
+    let gameActive = false;
     // Feedback
-const feedbackBtn = document.getElementById('feedback-btn');
-const feedbackBox = document.getElementById('f-box');
-const feedbackStatus = document.querySelector('.feedback-status');
+    const feedbackBtn = document.getElementById('feedback-btn');
+    const feedbackBox = document.getElementById('f-box');
+    const feedbackStatus = document.querySelector('.feedback-status');
 
-feedbackBtn.addEventListener('click', async function() {
-    const message = feedbackBox.value.trim();
-    const username = localStorage.getItem('keyname') || 'Anonymous';
+    feedbackBtn.addEventListener('click', async function() {
+        const message = feedbackBox.value.trim();
+        const username = localStorage.getItem('keyname') || 'Anonymous';
 
-    if (message === "") {
-        feedbackStatus.textContent = "⚠️ Please type a message";
-        feedbackStatus.style.color = "#ff4444";
-        return;
-    }
+        if (message === "") {
+            feedbackStatus.textContent = "⚠️ Please type a message";
+            feedbackStatus.style.color = "#ff4444";
+            return;
+        }
 
-    const { error } = await supabaseClient
-        .from('feedback')
-        .insert([{ username: username, message: message }]);
+        if (message.length > 500) {
+            feedbackStatus.textContent = "⚠️ Feedback too long";
+            feedbackStatus.style.color = "#ff4444";
+            return;
+        }
+
+        const { error } = await supabaseClient
+            .from('feedback')
+            .insert([{
+            username: username,
+            message: message
+            }]);
 
     if (error) {
         feedbackStatus.textContent = "⚠️ Failed to send. Try again.";
@@ -82,25 +93,33 @@ feedbackBtn.addEventListener('click', async function() {
     }
 
     //home-page -> game setup
-const setUsernameBtn = document.querySelector('.un-btn');
-const usernameInput = document.querySelector('.un');
-const msgEl = document.getElementById('username-msg'); // Make sure <p id="username-msg"></p> exists in your HTML near the username input
+    const setUsernameBtn = document.querySelector('.un-btn');
+    const usernameInput = document.querySelector('.un');
+    const msgEl = document.getElementById('username-msg'); // Make sure <p id="username-msg"></p> exists in your HTML near the username input
 
-setUsernameBtn.addEventListener('click', async function(){
-    const typedName = usernameInput.value;
-    const cleanName = typedName.trim();
+    setUsernameBtn.addEventListener('click', async function(){
+        const typedName = usernameInput.value;
+        const cleanName =
+        typedName.trim().toLowerCase();
 
-    if (cleanName === ""){
-        if (msgEl) msgEl.textContent = "⚠️ Please enter a username";
-        return;
-    }
+        if (cleanName === ""){
+            if (msgEl) msgEl.textContent = "⚠️ Please enter a username";
+            return;
+        }
+        if (cleanName.length < 3 || cleanName.length > 15) {
+            if (msgEl) msgEl.textContent = "⚠️ Username must be 3-15 characters";
+                return;
+        }
+
+        if (!/^[a-zA-Z0-9_]+$/.test(cleanName)) {
+            if (msgEl) msgEl.textContent = "⚠️ Only letters, numbers and _ allowed";
+                return;
+        }
 
     // Check if username exists in Supabase
-    // Using .maybeSingle() instead of .single() so a "no match" (username available)
-    // doesn't come back as a 406 error - it just returns data: null cleanly.
     const { data, error } = await supabaseClient
         .from('players')
-        .select('username')
+        .select('username,pin')
         .eq('username', cleanName)
         .maybeSingle();
 
@@ -111,35 +130,60 @@ setUsernameBtn.addEventListener('click', async function(){
     }
 
     if (data) {
-    // Username exists → log them in
-    localStorage.setItem('keyname', cleanName);
+        const enteredPin = prompt("Enter your 4-digit PIN");
+        if (!/^\d{4}$/.test(enteredPin)) {
+            if (msgEl) msgEl.textContent = "⚠️ Enter a valid 4-digit PIN";
+            return;
+        }
+        console.log("DB PIN:", data.pin);
+        console.log("Entered PIN:", enteredPin);
 
-    const homePage = document.querySelector('.home-page');
-    const gameSetup = document.querySelector('.game-setup');
+        if (String(enteredPin).trim() !== String(data.pin).trim()) {
+            if (msgEl)
+                msgEl.textContent =
+                "❌ Incorrect PIN";
+                return;
+        }
+        // Username exists → log them in
+        localStorage.setItem('keyname', cleanName);
 
-    if (homePage && gameSetup) {
-        homePage.style.display = 'none';
-        gameSetup.style.display = 'block';
+        const homePage = document.querySelector('.home-page');
+        const gameSetup = document.querySelector('.game-setup');
+
+        if (homePage && gameSetup) {
+            homePage.style.display = 'none';
+            gameSetup.style.display = 'block';
+        }
+
+        const displayUn = document.getElementById('display-un');
+        if (displayUn) displayUn.textContent = cleanName;
+
+        if (msgEl) msgEl.textContent = "✅ Welcome back, " + cleanName + "!";
+            return;
     }
-
-    const displayUn = document.getElementById('display-un');
-    if (displayUn) displayUn.textContent = cleanName;
-
-    if (msgEl) msgEl.textContent = "✅ Welcome back, " + cleanName + "!";
-    return;
-}
 
     // Save to localStorage
     localStorage.setItem('keyname', cleanName);
 
     // Insert new player into Supabase
+    const pin = prompt("Create a 4-digit PIN");
+
+    if (!/^\d{4}$/.test(pin)) {
+        if (msgEl) msgEl.textContent = "⚠️ PIN must be exactly 4 digits";
+        return;
+    }
+
     const { error: insertError } = await supabaseClient
         .from('players')
-        .insert([{ username: cleanName, wins: 0 }]);
+        .insert([{
+            username: cleanName,
+            wins: 0,
+            pin: pin
+        }]);
 
     if (insertError) {
         if (msgEl) msgEl.textContent = "⚠️ Something went wrong. Please try again.";
-        console.error(insertError);
+            console.error(insertError);
         return;
     }
 
@@ -156,10 +200,12 @@ setUsernameBtn.addEventListener('click', async function(){
     // Update username display
     const displayUn = document.getElementById('display-un');
     if (displayUn) displayUn.textContent = cleanName;
-});
-console.log("Set username button found:", setUsernameBtn);
-console.log("Username input found:", usernameInput);
-console.log("msgEl found:", msgEl);
+    
+    });
+
+    console.log("Set username button found:", setUsernameBtn);
+    console.log("Username input found:", usernameInput);
+    console.log("msgEl found:", msgEl);
 
 
 
@@ -220,9 +266,6 @@ console.log("msgEl found:", msgEl);
             secretCode=allDigits.slice(0,digitCount);  
         }
 
-        console.log("Secret code:", secretCode);
-        localStorage.setItem('secretCode',JSON.stringify(secretCode));
-
         let aDisplay="";     //update * display on game page
         for(let i=0;i<digitCount;i++){
             aDisplay+="* ";
@@ -261,11 +304,6 @@ console.log("msgEl found:", msgEl);
         const attemptSpan=document.querySelector('#attempt-cnt');
         const historyList=document.querySelector('#history-list');
 
-        //game state variables
-        let currentSecCode=[];
-        let attempts=0;
-        let gameActive=true;
-
         currentSecCode=secretCode;
         attempts=0;
         attemptSpan.textContent=attempts;
@@ -274,7 +312,7 @@ console.log("msgEl found:", msgEl);
         historyList.innerHTML="";
 
         //game logic(submit button)
-        submitBtn.addEventListener('click', async function(){
+        submitBtn.onclick = async function(){
             if(!gameActive){
                 feedbackTxt.textContent="Game over! Press New Game to play again";
                 return;
@@ -358,12 +396,12 @@ console.log("msgEl found:", msgEl);
                 feedbackTxt.textContent="Code Cracked!! Press New Game to play again!";
             }
             
-        });
+        };
         
 
         //give-up button
         const giveUpBtn=document.querySelector('.give-up');
-        giveUpBtn.addEventListener('click',function(){
+        giveUpBtn.onclick = function(){
             if(!gameActive){
                 feedbackTxt.textContent="Game Over Already!";
                 return;
@@ -371,11 +409,11 @@ console.log("msgEl found:", msgEl);
             const codeString=currentSecCode.join(' ');
             feedbackTxt.textContent=`You gave up. Secret code was ${codeString}`;
             gameActive=false;
-        });
+        };
 
         //new game button
         const newGameBtn = document.querySelector('.new-game');
-        newGameBtn.addEventListener('click', function() {
+        newGameBtn.onclick = function() {
             const gameSetup = document.querySelector('.game-setup');
             const gamePage = document.querySelector('.game-page');
     
@@ -383,10 +421,7 @@ console.log("msgEl found:", msgEl);
             gamePage.style.display = 'none';
             gameSetup.style.display = 'block';
             }
-        });
+        };
 
     });
-
-    
-
 });
