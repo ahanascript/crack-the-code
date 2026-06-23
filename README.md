@@ -19,7 +19,7 @@ A number guessing game where you crack a secret code. Built with HTML, CSS, Java
 
 ## Live Demo
 
-https://your-vercel-link.vercel.app
+https://crack-the-code-eight.vercel.app/
 
 ## Setup
 
